@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<widget xmlns:gap="http://phonegap.com/ns/1.0" xmlns="http://www.w3.org/ns/widgets">
+    <feature name="http://api.phonegap.com/1.0/geolocation"/>
+    <feature name="http://api.phonegap.com/1.0/network"/>
+    <icon src="assets/icons/icon-72-2x.png"/>
+    <icon gap:density="ldpi" gap:platform="android" src="assets/icons/36x36.png"/>
+    <icon gap:density="mdpi" gap:platform="android" src="assets/icons/48x48.png"/>
+    <icon gap:density="hdpi" gap:platform="android" src="assets/icons/72x72.png"/>
+    <icon gap:density="xhdpi" gap:platform="android" src="assets/icons/96x96.png"/>
+    <icon height="57" gap:platform="ios" src="assets/icons/icon-57.png" width="57"/>
+    <icon height="72" gap:platform="ios" src="assets/icons/icon-72.png" width="72"/>
+    <icon height="114" gap:platform="ios" src="assets/icons/icon-57-2x.png" width="114"/>
+    <icon height="144" gap:platform="ios" src="assets/icons/icon-72-2x.png" width="144"/>
+    <name>PropertyCross</name>
+    <preference name="phonegap-version" value="2.1.0"/>
+    <preference name="target-device" value="handset"/>
+    <preference name="orientation" value="portrait"/>
+    <preference name="webviewbounce" value="false"/>
+    <preference name="prerendered-icon" value="true"/>
+    <preference name="auto-hide-splash-screen" value="false"/>
+    <gap:splash gap:density="ldpi" gap:platform="android" src="assets/splashscreens/200x320.png"/>
+    <gap:splash gap:density="mdpi" gap:platform="android" src="assets/splashscreens/320x480.png"/>
+    <gap:splash gap:density="hdpi" gap:platform="android" src="assets/splashscreens/480x800.png"/>
+    <gap:splash gap:density="xhdpi" gap:platform="android" src="assets/splashscreens/720x1280.png"/>
+    <gap:splash height="480" gap:platform="ios" src="assets/splashscreens/screen-iphone-portrait.png" width="320"/>
+    <gap:splash height="960" gap:platform="ios" src="assets/splashscreens/screen-iphone-portrait-2x.png" width="640"/>
+</widget>
