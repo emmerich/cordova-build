@@ -1,7 +1,5 @@
 package com.github.emmerich.config;
 
-import com.github.emmerich.util.NullIntegerAdapter;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -46,9 +44,7 @@ public class Drawable {
     }
 
     @XmlAttribute(name = "width", required = false)
-    @XmlJavaTypeAdapter(NullIntegerAdapter.class)
     public void setWidth(Integer width) {
-        System.out.println("Setting width to: " + width + " for src " + getSrc());
         this.width = width;
     }
 
@@ -57,7 +53,6 @@ public class Drawable {
     }
 
     @XmlAttribute(name = "height", required = false)
-    @XmlJavaTypeAdapter(NullIntegerAdapter.class)
     public void setHeight(Integer height) {
         this.height = height;
     }
