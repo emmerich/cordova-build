@@ -10,7 +10,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * Time: 09:39
  * To change this template use File | Settings | File Templates.
  */
-public class MergerLookup {
+public class PlatformLookup {
 
     public static PlatformMerger getMergerForPlatform(MobilePlatform platform) throws MojoExecutionException {
 
