@@ -16,15 +16,18 @@ package com.github.emmerich;
  * limitations under the License.
  */
 
-import com.github.emmerich.config.CordovaConfiguration;
+import com.github.emmerich.config.build.ApplicationConfig;
+import com.github.emmerich.config.cordova.CordovaConfiguration;
 import com.github.emmerich.merger.PlatformMerger;
 import com.github.emmerich.prepare.PlatformPreparer;
 import com.github.emmerich.util.FileUtils;
-import com.github.emmerich.util.PlatformLookup;
-import com.github.emmerich.util.MobilePlatform;
+import com.github.emmerich.platform.PlatformLookup;
+import com.github.emmerich.platform.MobilePlatform;
+import com.github.emmerich.util.PluginPaths;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 
 import javax.xml.bind.*;
 import java.io.File;
@@ -39,8 +42,6 @@ import java.lang.Override;
  * @requiresDependencyResolution compile
  */
 public class BuildMojo extends AbstractMojo {
-    private static final String NATIVE_APP_DIR = "native";
-
     /**
      * Cordova configuration file.
      *
@@ -61,6 +62,11 @@ public class BuildMojo extends AbstractMojo {
      * @parameter expression="${project.build.directory}/cordova-build
      */
     private File pluginWorkingDir;
+
+    /**
+     * @parameter expression="${project}"
+     */
+    private MavenProject project;
 
     /**
      * The platforms to build a native application for.
@@ -106,15 +112,16 @@ public class BuildMojo extends AbstractMojo {
             throw new MojoExecutionException("There was an error parsing your config.xml");
         }
 
-
         // Iterate over each of the platforms specified by the user.
         for(MobilePlatform p : platforms) {
+            File applicationSpecificWorkingDir = FileUtils.getFile(pluginWorkingDir.getAbsolutePath(), p.toString());
+
             // Create the sample project from the Cordova library
             // TODO(shall): implement, this is currently done by an Ant target in the sample POM
             PlatformPreparer preparer = PlatformLookup.getPreparerForPlatform(p);
-            preparer.prepare();
+            preparer.prepare(applicationSpecificWorkingDir, project);
 
-            File workingDir = FileUtils.getFile(pluginWorkingDir.getAbsolutePath(), p.toString(), NATIVE_APP_DIR);
+            File workingDir = FileUtils.getFile(applicationSpecificWorkingDir.getAbsolutePath(), PluginPaths.NATIVE_APP_DIR);
 
             // Merge the project's source code with the sample project
             PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);

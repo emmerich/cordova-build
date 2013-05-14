@@ -1,9 +1,6 @@
-package com.github.emmerich.config;
+package com.github.emmerich.config.cordova;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 public class Drawable {
     private String src;

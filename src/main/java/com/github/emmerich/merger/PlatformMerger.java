@@ -1,8 +1,7 @@
 package com.github.emmerich.merger;
 
 
-import com.github.emmerich.config.CordovaConfiguration;
-import com.github.emmerich.config.Drawable;
+import com.github.emmerich.config.cordova.CordovaConfiguration;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jdom.JDOMException;
@@ -10,7 +9,6 @@ import org.jdom.JDOMException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public interface PlatformMerger {
     public void perform(File sourceDir, File nativeAppDir, CordovaConfiguration configFile) throws MojoFailureException, MojoExecutionException;

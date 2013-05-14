@@ -1,12 +1,11 @@
 package com.github.emmerich.util;
 
-import com.github.emmerich.config.CordovaConfiguration;
+import com.github.emmerich.config.cordova.CordovaConfiguration;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
-import java.io.IOException;
 
 public class CordovaConfigurationWriter {
 

@@ -31,61 +31,6 @@
                     <warSourceDirectory>${basedir}/src</warSourceDirectory>
                 </configuration>
             </plugin>
-
-            <!-- Explode the Cordova framework, build the sample project -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>prepare</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target name="prepare">
-                                <property name="build.compiler" value="extJavac"/>
-
-                                <echo message="Cleaning up existing Android project." />
-                                <delete includeEmptyDirs="true" failonerror="false">
-                                    <fileset dir="${cordova-build.android.native}" />
-                                </delete>
-
-                                <echo message="Unzipping the cordova-android library file." />
-                                <unzip src="${maven.dependency.org.apache.cordova.cordova-android.zip.path}" dest="${cordova-build.android}/lib" />
-
-                                <echo message="Creating the native Android project." />
-                                <exec executable="cmd" dir="${cordova-build.android.lib}" failonerror="true">
-                                    <arg line="/c ${cordova-build.android.lib}\bin\create.bat ${cordova-build.android.native} ${project.groupId} ${cordova-build.name}" />
-                                </exec>
-                            </target>
-                        </configuration>
-                    </execution>
-                    
-                    <!--<execution>
-                        <id>build</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target name="build">
-                                <property name="build.compiler" value="extJavac"/>
-                                
-                                <echo message="Building debug package." />
-                                <ant antfile="${cordova-build.android.native}/build.xml"
-                                   dir="${cordova-build.android.native}"
-                                   target="debug" />
-
-                                <mkdir dir="${cordova-build.android.bin}" />
-                                <copy todir="${cordova-build.android.bin}" file="${cordova-build.android.native}/bin/${cordova-build.name}-debug.apk" />
-                            </target>
-                        </configuration>
-                    </execution>-->
-                </executions>
-                
-            </plugin>
             
             <plugin>
                 <groupId>com.github.emmerich</groupId>

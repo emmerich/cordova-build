@@ -1,4 +1,4 @@
-package com.github.emmerich.util;
+package com.github.emmerich.platform;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,11 +1,14 @@
 package com.github.emmerich.merger;
 
-import com.github.emmerich.config.*;
-import com.github.emmerich.feature.AndroidPermissionMap;
-import com.github.emmerich.feature.PermissionMap;
+import com.github.emmerich.config.cordova.Access;
+import com.github.emmerich.config.cordova.Drawable;
+import com.github.emmerich.config.cordova.Feature;
+import com.github.emmerich.config.cordova.Preference;
+import com.github.emmerich.platform.AndroidPermissionMap;
+import com.github.emmerich.platform.PermissionMap;
 import com.github.emmerich.util.FileEditor;
 import com.github.emmerich.util.FileUtils;
-import com.github.emmerich.util.MobilePlatform;
+import com.github.emmerich.platform.MobilePlatform;
 import com.github.emmerich.util.XMLUtils;
 import org.jdom.Document;
 import org.jdom.Element;

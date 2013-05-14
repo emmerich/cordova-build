@@ -15,4 +15,8 @@ public class FileUtils extends org.codehaus.plexus.util.FileUtils {
 
         return new File(builder.toString());
     }
+
+    public static String stripFileExtension(String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf("."));
+    }
 }

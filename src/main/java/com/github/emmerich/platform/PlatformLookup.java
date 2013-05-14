@@ -1,4 +1,4 @@
-package com.github.emmerich.util;
+package com.github.emmerich.platform;
 
 import com.github.emmerich.merger.*;
 import com.github.emmerich.prepare.AndroidPreparer;
