@@ -9,7 +9,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 
-public class WindowsPhonePlatformMerger extends CommonPlatformMerger {
+public class WindowsPhoneMerger extends CommonPlatformMerger {
 
     // TODO(shall): WindowsPhone requires a feature map similar to android
     @Override

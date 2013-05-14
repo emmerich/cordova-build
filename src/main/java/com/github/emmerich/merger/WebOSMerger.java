@@ -9,7 +9,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 
-public class BlackberryPlatformMerger extends CommonPlatformMerger {
+public class WebOSMerger extends CommonPlatformMerger {
     @Override
     public void perform(File sourceDir, File nativeAppDir, CordovaConfiguration configFile) throws MojoFailureException {
         throw new MojoFailureException("Blackberry platform not yet supported.");

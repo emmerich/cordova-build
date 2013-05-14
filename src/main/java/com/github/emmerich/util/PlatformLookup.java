@@ -1,34 +1,40 @@
 package com.github.emmerich.util;
 
 import com.github.emmerich.merger.*;
+import com.github.emmerich.prepare.AndroidPreparer;
+import com.github.emmerich.prepare.PlatformPreparer;
 import org.apache.maven.plugin.MojoExecutionException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: shall
- * Date: 13/05/13
- * Time: 09:39
- * To change this template use File | Settings | File Templates.
- */
 public class PlatformLookup {
 
     public static PlatformMerger getMergerForPlatform(MobilePlatform platform) throws MojoExecutionException {
 
         switch(platform) {
             case android:
-                return new AndroidPlatformMerger();
+                return new AndroidMerger();
             case blackberry:
-                return new BlackberryPlatformMerger();
+                return new BlackberryMerger();
             case ios:
-                return new IOSPlatformMerger();
+                return new IOSMerger();
             case symbian:
-                return new SymbianPlatformMerger();
+                return new SymbianMerger();
             case webos:
-                return new WebOSPlatformMerger();
+                return new WebOSMerger();
             case winphone:
-                return new WindowsPhonePlatformMerger();
+                return new WindowsPhoneMerger();
             default:
-                throw new MojoExecutionException("Cannot find merger for platform " + platform);
+                throw new MojoExecutionException("Cannot find merger for platform: " + platform);
+        }
+
+    }
+
+    public static PlatformPreparer getPreparerForPlatform(MobilePlatform platform) throws MojoExecutionException {
+
+        switch(platform) {
+            case android:
+                return new AndroidPreparer();
+            default:
+                throw new MojoExecutionException("Cannot find preparer for platform: " + platform);
         }
 
     }

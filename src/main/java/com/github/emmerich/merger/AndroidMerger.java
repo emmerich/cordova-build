@@ -17,13 +17,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AndroidPlatformMerger extends CommonPlatformMerger {
+public class AndroidMerger extends CommonPlatformMerger {
 
     private static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 
     private PermissionMap permissionMap;
 
-    public AndroidPlatformMerger() {
+    public AndroidMerger() {
         permissionMap = new AndroidPermissionMap();
     }
 
@@ -61,7 +61,7 @@ public class AndroidPlatformMerger extends CommonPlatformMerger {
             );
 
             mainActivityWriter.flush();
-            
+
         }
     }
 

@@ -9,10 +9,10 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 
-public class IOSPlatformMerger extends CommonPlatformMerger {
+public class SymbianMerger extends CommonPlatformMerger {
     @Override
-    public void perform(File sourceDir, File nativeAppDir, CordovaConfiguration configFile) throws MojoFailureException, MojoExecutionException {
-        throw new MojoFailureException("iOS platform not yet supported.");
+    public void perform(File sourceDir, File nativeAppDir, CordovaConfiguration configFile) throws MojoFailureException {
+        throw new MojoFailureException("Blackberry platform not yet supported.");
     }
 
     @Override

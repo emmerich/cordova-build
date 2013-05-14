@@ -18,6 +18,8 @@ package com.github.emmerich;
 
 import com.github.emmerich.config.CordovaConfiguration;
 import com.github.emmerich.merger.PlatformMerger;
+import com.github.emmerich.prepare.PlatformPreparer;
+import com.github.emmerich.util.FileUtils;
 import com.github.emmerich.util.PlatformLookup;
 import com.github.emmerich.util.MobilePlatform;
 import org.apache.maven.plugin.AbstractMojo;
@@ -109,8 +111,10 @@ public class BuildMojo extends AbstractMojo {
         for(MobilePlatform p : platforms) {
             // Create the sample project from the Cordova library
             // TODO(shall): implement, this is currently done by an Ant target in the sample POM
+            PlatformPreparer preparer = PlatformLookup.getPreparerForPlatform(p);
+            preparer.prepare();
 
-            File workingDir = new File(pluginWorkingDir.getAbsolutePath() + File.separator + p + File.separator + NATIVE_APP_DIR);
+            File workingDir = FileUtils.getFile(pluginWorkingDir.getAbsolutePath(), p.toString(), NATIVE_APP_DIR);
 
             // Merge the project's source code with the sample project
             PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
