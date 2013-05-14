@@ -16,10 +16,9 @@ package com.github.emmerich;
  * limitations under the License.
  */
 
-import com.github.emmerich.config.Access;
 import com.github.emmerich.config.CordovaConfiguration;
 import com.github.emmerich.merger.PlatformMerger;
-import com.github.emmerich.util.MergerLookup;
+import com.github.emmerich.util.PlatformLookup;
 import com.github.emmerich.util.MobilePlatform;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,12 +26,9 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.lang.Override;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Builds a Cordova project for each chosen platform, merges in the source from the WAR project and builds the
@@ -94,10 +90,8 @@ public class BuildMojo extends AbstractMojo {
         }
 
         for(MobilePlatform p : platforms) {
-            PlatformMerger merger = MergerLookup.getMergerForPlatform(p);
+            PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
             File workingDir = new File(pluginWorkingDir.getAbsolutePath() + File.separator + p + File.separator + NATIVE_APP_DIR);
-
-            getLog().info("Performing on " + workingDir.getAbsolutePath());
             merger.perform(explodedWarDir, workingDir, config);
         }
     }
