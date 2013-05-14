@@ -1,18 +1,16 @@
 package com.github.emmerich.prepare;
 
+import com.github.emmerich.context.ApplicationContext;
+import com.github.emmerich.context.PlatformContext;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
-import java.io.File;
 import java.io.IOException;
 
 public interface PlatformPreparer {
 
-    public void prepare(File workingDirectory, MavenProject project) throws MojoExecutionException;
+    public void prepare(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException;
 
-    public void cleanApplicationDirectory();
-    public void resolveCordovaDependency() throws MojoExecutionException;
-    public void buildNativeProject() throws IOException;
-
-    String getCordovaArtifactId();
+    public void cleanApplicationDirectory(ApplicationContext applicationContext, PlatformContext context);
+    public void resolveCordovaDependency(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException;
+    public void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException;
 }

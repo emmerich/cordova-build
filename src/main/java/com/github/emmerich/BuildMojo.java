@@ -16,14 +16,14 @@ package com.github.emmerich;
  * limitations under the License.
  */
 
-import com.github.emmerich.config.build.ApplicationConfig;
+import com.github.emmerich.context.ApplicationContext;
+import com.github.emmerich.context.PlatformContext;
 import com.github.emmerich.config.cordova.CordovaConfiguration;
 import com.github.emmerich.merger.PlatformMerger;
 import com.github.emmerich.prepare.PlatformPreparer;
 import com.github.emmerich.util.FileUtils;
 import com.github.emmerich.platform.PlatformLookup;
 import com.github.emmerich.platform.MobilePlatform;
-import com.github.emmerich.util.PluginPaths;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -42,6 +42,9 @@ import java.lang.Override;
  * @requiresDependencyResolution compile
  */
 public class BuildMojo extends AbstractMojo {
+
+    public static final String CORDOVA_VERSION = "2.5.0";
+
     /**
      * Cordova configuration file.
      *
@@ -61,7 +64,7 @@ public class BuildMojo extends AbstractMojo {
      *
      * @parameter expression="${project.build.directory}/cordova-build
      */
-    private File pluginWorkingDir;
+    public File pluginWorkingDir;
 
     /**
      * @parameter expression="${project}"
@@ -87,7 +90,7 @@ public class BuildMojo extends AbstractMojo {
         CordovaConfiguration config = null;
 
         try {
-            // Parse the Corvoda configuration XML into our Java object.
+            // Parse the Cordova configuration XML into our Java object.
             JAXBContext jc = JAXBContext.newInstance(CordovaConfiguration.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
 
@@ -96,11 +99,11 @@ public class BuildMojo extends AbstractMojo {
             unmarshaller.setEventHandler(new ValidationEventHandler() {
                 @Override
                 public boolean handleEvent(ValidationEvent event) {
-                    getLog().warn("Encountered an error when parsing your config.xml." +
-                            " This may be due to a tag present in your config.xml that is not yet supported by the" +
-                            " plugin. Please raise an issue if this is the case. The error message was: \n" +
-                            event.getMessage() + "\n");
-                    return true;
+                getLog().warn("Encountered an error when parsing your config.xml." +
+                        " This may be due to a tag present in your config.xml that is not yet supported by the" +
+                        " plugin. Please raise an issue if this is the case. The error message was: \n" +
+                        event.getMessage() + "\n");
+                return true;
                 }
             });
 
@@ -112,20 +115,28 @@ public class BuildMojo extends AbstractMojo {
             throw new MojoExecutionException("There was an error parsing your config.xml");
         }
 
+        ApplicationContext applicationContext =
+                new ApplicationContext(project, config, explodedWarDir);
+
         // Iterate over each of the platforms specified by the user.
         for(MobilePlatform p : platforms) {
-            File applicationSpecificWorkingDir = FileUtils.getFile(pluginWorkingDir.getAbsolutePath(), p.toString());
+            File platformWorkingDir = FileUtils.getFile(pluginWorkingDir, p.toString());
+            File platformLibDir = FileUtils.getFile(platformWorkingDir, "lib");
+            File platformNativeDir = FileUtils.getFile(platformWorkingDir, "native");
+
+            PlatformContext context = new PlatformContext(
+                    PlatformLookup.getCordovaArtifactId(p),
+                    platformWorkingDir,
+                    platformLibDir,
+                    platformNativeDir);
 
             // Create the sample project from the Cordova library
-            // TODO(shall): implement, this is currently done by an Ant target in the sample POM
             PlatformPreparer preparer = PlatformLookup.getPreparerForPlatform(p);
-            preparer.prepare(applicationSpecificWorkingDir, project);
-
-            File workingDir = FileUtils.getFile(applicationSpecificWorkingDir.getAbsolutePath(), PluginPaths.NATIVE_APP_DIR);
+            preparer.prepare(applicationContext, context);
 
             // Merge the project's source code with the sample project
             PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
-            merger.perform(explodedWarDir, workingDir, config);
+            merger.perform(applicationContext, context);
 
 
             // Build the sample project and place in the bin folder

@@ -12,16 +12,6 @@ public class PlatformLookup {
         switch(platform) {
             case android:
                 return new AndroidMerger();
-            case blackberry:
-                return new BlackberryMerger();
-            case ios:
-                return new IOSMerger();
-            case symbian:
-                return new SymbianMerger();
-            case webos:
-                return new WebOSMerger();
-            case winphone:
-                return new WindowsPhoneMerger();
             default:
                 throw new MojoExecutionException("Cannot find merger for platform: " + platform);
         }
@@ -35,6 +25,17 @@ public class PlatformLookup {
                 return new AndroidPreparer();
             default:
                 throw new MojoExecutionException("Cannot find preparer for platform: " + platform);
+        }
+
+    }
+
+    public static String getCordovaArtifactId(MobilePlatform platform) throws MojoExecutionException {
+
+        switch(platform) {
+            case android:
+                return "cordova-android";
+            default:
+                throw new MojoExecutionException("Cannot find Cordova Artifact ID for platform: " + platform);
         }
 
     }

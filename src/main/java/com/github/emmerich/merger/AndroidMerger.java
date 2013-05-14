@@ -1,11 +1,10 @@
 package com.github.emmerich.merger;
 
-import com.github.emmerich.config.cordova.Access;
-import com.github.emmerich.config.cordova.Drawable;
-import com.github.emmerich.config.cordova.Feature;
-import com.github.emmerich.config.cordova.Preference;
+import com.github.emmerich.config.cordova.*;
+import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.platform.AndroidPermissionMap;
 import com.github.emmerich.platform.PermissionMap;
+import com.github.emmerich.context.PlatformContext;
 import com.github.emmerich.util.FileEditor;
 import com.github.emmerich.util.FileUtils;
 import com.github.emmerich.platform.MobilePlatform;
@@ -25,32 +24,33 @@ public class AndroidMerger extends CommonPlatformMerger {
     private static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 
     private PermissionMap permissionMap;
+    private File mainActivityFile;
 
     public AndroidMerger() {
         permissionMap = new AndroidPermissionMap();
     }
 
     @Override
-    public void copyIconsToNative() throws IOException {
-        for(Drawable i : configurationFile.getIcons()) {
+    public void copyIconsToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException {
+        for(Drawable i : applicationContext.getCordovaConfiguration().getIcons()) {
             if(MobilePlatform.android.toString().equalsIgnoreCase(i.getPlatform())) {
-                copyDrawableToResourceDir(i, "icon", sourceDir, nativeAppDir);
+                copyDrawableToResourceDir(i, "icon", applicationContext.getSourceDir(), context.getPlatformNativeDirectory());
             }
         }
     }
 
     @Override
-    public void copySplashesToNative() throws IOException {
-        for(Drawable s : configurationFile.getSplashes()) {
+    public void copySplashesToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException {
+        CordovaConfiguration configuration = applicationContext.getCordovaConfiguration();
+
+        for(Drawable s : configuration.getSplashes()) {
             if(MobilePlatform.android.toString().equalsIgnoreCase(s.getPlatform())) {
-                copyDrawableToResourceDir(s, "splash", sourceDir, nativeAppDir);
+                copyDrawableToResourceDir(s, "splash", applicationContext.getSourceDir(), context.getPlatformNativeDirectory());
             }
         }
 
-        if(configurationFile.getSplashes().size() > 0) {
-
-            // Splash screen also needs to be included in the main Activity.
-            File mainActivityFile = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "src", "com", "github", "chrisprice", "CordovaBuildExample.java");
+        if(configuration.getSplashes().size() > 0) {
+            File mainActivityFile = getMainActivityFile(applicationContext, context);
             FileEditor mainActivityWriter = new FileEditor(mainActivityFile);
             mainActivityWriter.open();
             mainActivityWriter.insertBefore(
@@ -64,14 +64,13 @@ public class AndroidMerger extends CommonPlatformMerger {
             );
 
             mainActivityWriter.flush();
-
         }
     }
 
     @Override
-    public void copySourceToNative() throws IOException {
+    public void copySourceToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException {
         // Copy over the src to the assets folder
-        File assetsDir = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "assets", "www");
+        File assetsDir = FileUtils.getFile(context.getPlatformNativeDirectory(), "assets", "www");
         String tempAssetsDir = assetsDir.getAbsolutePath() + "-temp";
 
         FileUtils.mkdir(tempAssetsDir);
@@ -79,30 +78,33 @@ public class AndroidMerger extends CommonPlatformMerger {
         File tempAssetsFile = new File(tempAssetsDir);
 
         // Copy the Cordova JS into the assets www folder
-        // TODO(emmerich): Derive cordova version
-        FileUtils.copyFileToDirectory(FileUtils.getFile(assetsDir.getAbsolutePath(), "cordova-2.5.0.js"), tempAssetsFile);
+        FileUtils.copyFileToDirectory(
+                FileUtils.getFile(assetsDir, "cordova-" + applicationContext.getCordovaVersion() + ".js"),
+                tempAssetsFile);
         FileUtils.deleteDirectory(assetsDir);
         FileUtils.rename(tempAssetsFile, assetsDir);
 
-        FileUtils.copyDirectoryStructure(sourceDir, assetsDir);
+        FileUtils.copyDirectoryStructure(applicationContext.getSourceDir(), assetsDir);
 
-        File defaultConfigFile = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "res", "xml", "config.xml");
+        File defaultConfigFile = FileUtils.getFile(context.getPlatformNativeDirectory(), "res", "xml", "config.xml");
         FileUtils.forceDelete(defaultConfigFile);
     }
 
     @Override
-    public void copyConfigToNative() throws IOException {
-        File configXMLLoc = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "res", "xml");
-        FileUtils.copyFileToDirectory(configurationFile.getSource(), configXMLLoc);
+    public void copyConfigToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException {
+        File configXMLLoc = FileUtils.getFile(context.getPlatformNativeDirectory(), "res", "xml");
+        FileUtils.copyFileToDirectory(applicationContext.getCordovaConfiguration().getSource(), configXMLLoc);
     }
 
     @Override
-    public void writeAccessDeclarations() throws JAXBException {
+    public void writeAccessDeclarations(ApplicationContext applicationContext, PlatformContext context) throws JAXBException {
+        CordovaConfiguration configuration = applicationContext.getCordovaConfiguration();
+
         // PhoneGap build sets a default access to all origins, do that here
         // see: https://build.phonegap.com/blog/access-tags
         // TODO(shall): PhoneGap don't do the default thing anymore, they have made it slightly
         // more complicated. Update this.
-        ArrayList<Access> accesses = configurationFile.getAccesses();
+        ArrayList<Access> accesses = configuration.getAccesses();
 
         if(accesses == null) {
             accesses = new ArrayList<Access>();
@@ -115,16 +117,19 @@ public class AndroidMerger extends CommonPlatformMerger {
             accesses.add(defaultAccess);
         }
 
-        configurationFile.setAccesses(accesses);
-        configurationFileWriter.write(configurationFile, FileUtils.getFile(nativeAppDir.getAbsolutePath(), "res", "xml", "config.xml"));
+        configuration.setAccesses(accesses);
+        configurationFileWriter.write(configuration,
+                FileUtils.getFile(context.getPlatformNativeDirectory(), "res", "xml", "config.xml"));
     }
 
     @Override
-    public void writeApplicationPermissions() throws IOException, JDOMException {
-        File manifestFile = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "AndroidManifest.xml");
+    public void writeApplicationPermissions(ApplicationContext applicationContext, PlatformContext context) throws IOException, JDOMException {
+        CordovaConfiguration configuration = applicationContext.getCordovaConfiguration();
+
+        File manifestFile = FileUtils.getFile(context.getPlatformNativeDirectory(), "AndroidManifest.xml");
         Document applicationManifest = XMLUtils.getDocument(manifestFile);
         Element applicationManifestRoot = applicationManifest.getRootElement();
-        Preference permissionsPreference = configurationFile.getPreferenceByName("permissions");
+        Preference permissionsPreference = configuration.getPreferenceByName("permissions");
 
         // First remove the permissions made by the default application (which is all)
         if(permissionsPreference != null && permissionsPreference.getValue().equalsIgnoreCase("none")) {
@@ -132,7 +137,7 @@ public class AndroidMerger extends CommonPlatformMerger {
 
             // PhoneGap allows the use of a permissions preference which, if set to none, will remove all permissions
             // from the application (even the defaults)
-            for(Feature f : configurationFile.getFeatures()) {
+            for(Feature f : configuration.getFeatures()) {
                 for(String permission : permissionMap.getPermissionsForFeature(f)) {
                     applicationManifestRoot.addContent(buildPermissionElement(permission));
                 }
@@ -158,5 +163,22 @@ public class AndroidMerger extends CommonPlatformMerger {
         File destinationFile = FileUtils.getFile(rootDir.getAbsolutePath(), "res", "drawable-" + drawable.getDensity(), name + "." + extension);
 
         FileUtils.copyFile(drawableFile, destinationFile);
+    }
+
+    private File getMainActivityFile(ApplicationContext applicationContext, PlatformContext context) {
+        if(mainActivityFile == null) {
+            String[] packagesPath = applicationContext.getPackageName().split("\\.");
+            String[] fullPath = new String[packagesPath.length + 2];
+            fullPath[0] = "src";
+
+            for(int i = 0; i<packagesPath.length; i++) {
+                fullPath[i+1] = packagesPath[i];
+            }
+
+            fullPath[fullPath.length - 1] = applicationContext.getApplicationName() + ".java";
+            mainActivityFile = FileUtils.getFile(context.getPlatformNativeDirectory(), fullPath);
+        }
+
+        return mainActivityFile;
     }
 }

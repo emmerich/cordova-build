@@ -14,11 +14,6 @@
         <cordova-build.name>CordovaBuildExample</cordova-build.name>
 
         <cordova-build.cordovaandroid.version>2.5.0</cordova-build.cordovaandroid.version>
-        <cordova-build.android>${cordova-build.root}\android</cordova-build.android>
-        <cordova-build.android.lib>${cordova-build.android}\lib\cordova-android-${cordova-build.cordovaandroid.version}</cordova-build.android.lib>
-        <cordova-build.android.native>${cordova-build.android}\native</cordova-build.android.native>
-        <cordova-build.android.bin>${cordova-build.android}\bin</cordova-build.android.bin>
-        <cordova-build.android.target>android-17</cordova-build.android.target>
     </properties>
 
     <build>
