@@ -24,9 +24,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import java.io.File;
 import java.lang.Override;
 
@@ -81,18 +79,46 @@ public class BuildMojo extends AbstractMojo {
         CordovaConfiguration config = null;
 
         try {
+            // Parse the Corvoda configuration XML into our Java object.
             JAXBContext jc = JAXBContext.newInstance(CordovaConfiguration.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
+
+            // Finding tags that don't exist on the model is fine. It means that the plugin hasn't yet implemented that
+            // tag. However, for the ease of debugging it is best to report this to the user.
+            unmarshaller.setEventHandler(new ValidationEventHandler() {
+                @Override
+                public boolean handleEvent(ValidationEvent event) {
+                    getLog().warn("Encountered an error when parsing your config.xml." +
+                            " This may be due to a tag present in your config.xml that is not yet supported by the" +
+                            " plugin. Please raise an issue if this is the case. The error message was: \n" +
+                            event.getMessage() + "\n");
+                    return true;
+                }
+            });
+
+            // Perform the unmarshal and set the filesystem source of the configuration.
             config = (CordovaConfiguration) unmarshaller.unmarshal(configFile);
             config.setSource(configFile);
         } catch (JAXBException e) {
             e.printStackTrace();
+            throw new MojoExecutionException("There was an error parsing your config.xml");
         }
 
+
+        // Iterate over each of the platforms specified by the user.
         for(MobilePlatform p : platforms) {
-            PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
+            // Create the sample project from the Cordova library
+            // TODO(shall): implement, this is currently done by an Ant target in the sample POM
+
             File workingDir = new File(pluginWorkingDir.getAbsolutePath() + File.separator + p + File.separator + NATIVE_APP_DIR);
+
+            // Merge the project's source code with the sample project
+            PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
             merger.perform(explodedWarDir, workingDir, config);
+
+
+            // Build the sample project and place in the bin folder
+            // TODO(shall): implement, this is current done manually via the command line
         }
     }
 }

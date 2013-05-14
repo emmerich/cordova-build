@@ -1,6 +1,5 @@
 package com.github.emmerich.config;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -34,7 +33,7 @@ public class CordovaConfiguration {
         return name;
     }
 
-    @XmlElement(name="name")
+    @XmlElement(name = "name")
     public void setName(String name) {
         this.name = name;
     }

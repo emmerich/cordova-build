@@ -60,7 +60,7 @@ public class AndroidPlatformMerger implements PlatformMerger {
 
             // Copy the Cordova JS into the assets www folder
             // TODO(emmerich): Derive cordova version
-            FileUtils.copyFileToDirectory(new File(assetsDir + File.separator + "cordova-2.7.0.js"), tempAssetsFile);
+            FileUtils.copyFileToDirectory(new File(assetsDir + File.separator + "cordova-2.5.0.js"), tempAssetsFile);
             FileUtils.deleteDirectory(assetsDir);
             FileUtils.rename(tempAssetsFile, assetsFile);
 
