@@ -3,8 +3,8 @@ package com.github.emmerich.merger;
 import com.github.emmerich.config.*;
 import com.github.emmerich.feature.AndroidPermissionMap;
 import com.github.emmerich.feature.PermissionMap;
+import com.github.emmerich.util.FileEditor;
 import com.github.emmerich.util.FileUtils;
-import com.github.emmerich.util.FileWriter;
 import com.github.emmerich.util.MobilePlatform;
 import com.github.emmerich.util.XMLUtils;
 import org.jdom.Document;
@@ -44,9 +44,25 @@ public class AndroidPlatformMerger extends CommonPlatformMerger {
             }
         }
 
-        // Splash screen also needs to be included in the main Activity.
-        /*File mainActivityFile = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "src");
-        FileWriter mainActivityWriter = new FileWriter(mainActivityFile);*/
+        if(configurationFile.getSplashes().size() > 0) {
+
+            // Splash screen also needs to be included in the main Activity.
+            File mainActivityFile = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "src", "com", "github", "chrisprice", "CordovaBuildExample.java");
+            FileEditor mainActivityWriter = new FileEditor(mainActivityFile);
+            mainActivityWriter.open();
+            mainActivityWriter.insertBefore(
+                    "(super\\.loadUrl\\(Config.getStartUrl\\(\\)\\);)",
+                    "super.setIntegerProperty(\"splashscreen\", R.drawable.splash);"
+            );
+
+            mainActivityWriter.replace(
+                "super\\.loadUrl\\(Config.getStartUrl\\(\\)\\);",
+                "super.loadUrl(Config.getStartUrl(), 5000);"
+            );
+
+            mainActivityWriter.flush();
+            
+        }
     }
 
     @Override
