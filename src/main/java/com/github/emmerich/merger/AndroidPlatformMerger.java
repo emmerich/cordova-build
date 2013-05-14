@@ -102,7 +102,7 @@ public class AndroidPlatformMerger extends CommonPlatformMerger {
 
     @Override
     public void writeApplicationPermissions() throws IOException, JDOMException {
-        File manifestFile = new File(nativeAppDir.getAbsolutePath() + File.separator + "AndroidManifest.xml");
+        File manifestFile = FileUtils.getFile(nativeAppDir.getAbsolutePath(), "AndroidManifest.xml");
         Document applicationManifest = XMLUtils.getDocument(manifestFile);
         Element applicationManifestRoot = applicationManifest.getRootElement();
         Preference permissionsPreference = configurationFile.getPreferenceByName("permissions");
@@ -134,9 +134,9 @@ public class AndroidPlatformMerger extends CommonPlatformMerger {
     }
 
     private void copyDrawableToResourceDir(Drawable drawable, String name, File sourceDir, File rootDir) throws IOException {
-        File drawableFile = new File(sourceDir.getAbsolutePath() + File.separator + drawable.getSrc());
+        File drawableFile = FileUtils.getFile(sourceDir.getAbsolutePath(), drawable.getSrc());
         String extension = drawable.getSrc().split("\\.")[drawable.getSrc().split("\\.").length - 1];
-        File destinationFile = new File(rootDir + File.separator + "res" + File.separator + "drawable-" + drawable.getDensity() + File.separator + name + "." + extension);
+        File destinationFile = FileUtils.getFile(rootDir.getAbsolutePath(), "res", "drawable-" + drawable.getDensity(), name + "." + extension);
 
         FileUtils.copyFile(drawableFile, destinationFile);
     }
