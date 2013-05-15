@@ -1,0 +1,12 @@
+<component-set>
+    <components>
+        <component>
+            <role>com.github.emmerich.platform.PlatformProviderFactory</role>
+            <implementation>com.github.emmerich.platform.PlatformProviderFactoryImpl</implementation>
+        </component>
+        <component>
+            <role>com.github.emmerich.util.FileHelper</role>
+            <implementation>com.github.emmerich.util.FileHelperImpl</implementation>
+        </component>
+    </components>
+</component-set>

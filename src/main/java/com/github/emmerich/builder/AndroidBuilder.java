@@ -2,9 +2,10 @@ package com.github.emmerich.builder;
 
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.util.FileUtils;
+import com.github.emmerich.util.FileHelper;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class AndroidBuilder extends CommonBuilder {
 
     @Override
     public void performBuild(ApplicationContext applicationContext, PlatformContext context) {
-        File buildFile = FileUtils.getFile(context.getPlatformNativeDirectory(), "build.xml");
+        File buildFile = fileHelper.getFile(context.getPlatformNativeDirectory(), "build.xml");
         Project project = new Project();
         project.setUserProperty("ant.file", buildFile.getAbsolutePath());
         project.setProperty("build.compiler", "extJavac");
@@ -29,8 +30,8 @@ public class AndroidBuilder extends CommonBuilder {
 
     @Override
     public void moveBinaries(ApplicationContext applicationContext, PlatformContext context) throws IOException {
-        FileUtils.copyFileToDirectory(
-            FileUtils.getFile(context.getPlatformNativeDirectory(), "bin", applicationContext.getApplicationName() + DEBUG_APK_SUFFIX),
+        fileHelper.copyFileToDirectory(
+            fileHelper.getFile(context.getPlatformNativeDirectory(), "bin", applicationContext.getApplicationName() + DEBUG_APK_SUFFIX),
             context.getPlatformBinDirectory());
     }
 }

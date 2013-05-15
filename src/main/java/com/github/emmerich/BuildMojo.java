@@ -22,9 +22,10 @@ import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
 import com.github.emmerich.merger.PlatformMerger;
 import com.github.emmerich.platform.MobilePlatform;
-import com.github.emmerich.platform.PlatformLookup;
+import com.github.emmerich.platform.PlatformProviderFactory;
+import com.github.emmerich.platform.provider.PlatformProvider;
 import com.github.emmerich.prepare.PlatformPreparer;
-import com.github.emmerich.util.FileUtils;
+import com.github.emmerich.util.FileHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -84,6 +85,16 @@ public class BuildMojo extends AbstractMojo {
             MobilePlatform.winphone
     };
 
+    /**
+     * @component role="com.github.emmerich.platform.PlatformProviderFactory"
+     */
+    private PlatformProviderFactory platformProviderFactory;
+
+    /**
+     * @component role="com.github.emmerich.util.FileHelper"
+     */
+    private FileHelper fileHelper;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         CordovaConfiguration config = null;
@@ -119,28 +130,33 @@ public class BuildMojo extends AbstractMojo {
 
         // Iterate over each of the platforms specified by the user.
         for(MobilePlatform p : platforms) {
-            File platformWorkingDir = FileUtils.getFile(pluginWorkingDir, p.toString());
-            File platformLibDir = FileUtils.getFile(platformWorkingDir, "lib");
-            File platformNativeDir = FileUtils.getFile(platformWorkingDir, "native");
-            File platformBinDir = FileUtils.getFile(platformWorkingDir, "bin");
+            PlatformProvider provider = platformProviderFactory.getPlatformProvider(p);
+
+            File platformWorkingDir = fileHelper.getFile(pluginWorkingDir, p.toString());
+            File platformLibDir = fileHelper.getFile(platformWorkingDir, "lib");
+            File platformNativeDir = fileHelper.getFile(platformWorkingDir, "native");
+            File platformBinDir = fileHelper.getFile(platformWorkingDir, "bin");
 
             PlatformContext context = new PlatformContext(
-                    PlatformLookup.getCordovaArtifactId(p),
+                    provider.getCordovaArtifactId(p),
                     platformWorkingDir,
                     platformLibDir,
                     platformNativeDir,
                     platformBinDir);
 
             // Create the sample project from the Cordova library
-            PlatformPreparer preparer = PlatformLookup.getPreparerForPlatform(p);
+            PlatformPreparer preparer = provider.getPreparer(p);
+            preparer.setFileHelper(fileHelper);
             preparer.prepare(applicationContext, context);
 
             // Merge the project's source code with the sample project
-            PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
+            PlatformMerger merger = provider.getMerger(p);
+            merger.setFileHelper(fileHelper);
             merger.merge(applicationContext, context);
 
             // Build the sample project and place in the bin folder
-            PlatformBuilder builder = PlatformLookup.getBuilderForPlatform(p);
+            PlatformBuilder builder = provider.getBuilder(p);
+            builder.setFileHelper(fileHelper);
             builder.build(applicationContext, context);
         }
     }

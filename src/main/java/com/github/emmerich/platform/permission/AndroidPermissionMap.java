@@ -1,10 +1,10 @@
-package com.github.emmerich.platform;
+package com.github.emmerich.platform.permission;
 
 import com.github.emmerich.config.Feature;
 
 import java.util.*;
 
-public class AndroidPermissionMap implements PermissionMap {
+public class AndroidPermissionMap implements PlatformPermissionMap {
     private static final String PERMISSION_PREFIX = "android.permission.";
 
     private Map<String, List<String>> featureConvert;

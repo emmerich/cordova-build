@@ -10,13 +10,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: shall
- * Date: 14/05/13
- * Time: 10:30
- * To change this template use File | Settings | File Templates.
- */
 public class XMLUtils {
 
     public static Document getDocument(File file) throws IOException, JDOMException {
@@ -29,6 +22,5 @@ public class XMLUtils {
         outputter.setFormat(Format.getPrettyFormat());
         outputter.output(document, new FileWriter(file));
     }
-
 
 }

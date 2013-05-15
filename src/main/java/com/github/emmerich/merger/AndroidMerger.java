@@ -3,11 +3,10 @@ package com.github.emmerich.merger;
 import com.github.emmerich.config.*;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.platform.AndroidPermissionMap;
+import com.github.emmerich.platform.permission.AndroidPermissionMap;
 import com.github.emmerich.platform.MobilePlatform;
-import com.github.emmerich.platform.PermissionMap;
+import com.github.emmerich.platform.permission.PlatformPermissionMap;
 import com.github.emmerich.util.FileEditor;
-import com.github.emmerich.util.FileUtils;
 import com.github.emmerich.util.XMLUtils;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -23,7 +22,7 @@ public class AndroidMerger extends CommonMerger {
 
     private static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 
-    private PermissionMap permissionMap;
+    private PlatformPermissionMap permissionMap;
     private File mainActivityFile;
 
     public AndroidMerger() {
@@ -70,30 +69,30 @@ public class AndroidMerger extends CommonMerger {
     @Override
     public void copySourceToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException {
         // Copy over the src to the assets folder
-        File assetsDir = FileUtils.getFile(context.getPlatformNativeDirectory(), "assets", "www");
+        File assetsDir = fileHelper.getFile(context.getPlatformNativeDirectory(), "assets", "www");
         String tempAssetsDir = assetsDir.getAbsolutePath() + "-temp";
 
-        FileUtils.mkdir(tempAssetsDir);
+        fileHelper.mkdir(tempAssetsDir);
 
         File tempAssetsFile = new File(tempAssetsDir);
 
         // Copy the Cordova JS into the assets www folder
-        FileUtils.copyFileToDirectory(
-                FileUtils.getFile(assetsDir, "cordova-" + applicationContext.getCordovaVersion() + ".js"),
+        fileHelper.copyFileToDirectory(
+                fileHelper.getFile(assetsDir, "cordova-" + applicationContext.getCordovaVersion() + ".js"),
                 tempAssetsFile);
-        FileUtils.deleteDirectory(assetsDir);
-        FileUtils.rename(tempAssetsFile, assetsDir);
+        fileHelper.deleteDirectory(assetsDir);
+        fileHelper.rename(tempAssetsFile, assetsDir);
 
-        FileUtils.copyDirectoryStructure(applicationContext.getSourceDir(), assetsDir);
+        fileHelper.copyDirectoryStructure(applicationContext.getSourceDir(), assetsDir);
 
-        File defaultConfigFile = FileUtils.getFile(context.getPlatformNativeDirectory(), "res", "xml", "config.xml");
-        FileUtils.forceDelete(defaultConfigFile);
+        File defaultConfigFile = fileHelper.getFile(context.getPlatformNativeDirectory(), "res", "xml", "config.xml");
+        fileHelper.forceDelete(defaultConfigFile);
     }
 
     @Override
     public void copyConfigToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException {
-        File configXMLLoc = FileUtils.getFile(context.getPlatformNativeDirectory(), "res", "xml");
-        FileUtils.copyFileToDirectory(applicationContext.getCordovaConfiguration().getSource(), configXMLLoc);
+        File configXMLLoc = fileHelper.getFile(context.getPlatformNativeDirectory(), "res", "xml");
+        fileHelper.copyFileToDirectory(applicationContext.getCordovaConfiguration().getSource(), configXMLLoc);
     }
 
     @Override
@@ -119,14 +118,14 @@ public class AndroidMerger extends CommonMerger {
 
         configuration.setAccesses(accesses);
         configurationFileWriter.write(configuration,
-                FileUtils.getFile(context.getPlatformNativeDirectory(), "res", "xml", "config.xml"));
+                fileHelper.getFile(context.getPlatformNativeDirectory(), "res", "xml", "config.xml"));
     }
 
     @Override
     public void writeApplicationPermissions(ApplicationContext applicationContext, PlatformContext context) throws IOException, JDOMException {
         CordovaConfiguration configuration = applicationContext.getCordovaConfiguration();
 
-        File manifestFile = FileUtils.getFile(context.getPlatformNativeDirectory(), "AndroidManifest.xml");
+        File manifestFile = fileHelper.getFile(context.getPlatformNativeDirectory(), "AndroidManifest.xml");
         Document applicationManifest = XMLUtils.getDocument(manifestFile);
         Element applicationManifestRoot = applicationManifest.getRootElement();
         Preference permissionsPreference = configuration.getPreferenceByName("permissions");
@@ -158,11 +157,11 @@ public class AndroidMerger extends CommonMerger {
     }
 
     private void copyDrawableToResourceDir(Drawable drawable, String name, File sourceDir, File rootDir) throws IOException {
-        File drawableFile = FileUtils.getFile(sourceDir.getAbsolutePath(), drawable.getSrc());
+        File drawableFile = fileHelper.getFile(sourceDir.getAbsolutePath(), drawable.getSrc());
         String extension = drawable.getSrc().split("\\.")[drawable.getSrc().split("\\.").length - 1];
-        File destinationFile = FileUtils.getFile(rootDir.getAbsolutePath(), "res", "drawable-" + drawable.getDensity(), name + "." + extension);
+        File destinationFile = fileHelper.getFile(rootDir.getAbsolutePath(), "res", "drawable-" + drawable.getDensity(), name + "." + extension);
 
-        FileUtils.copyFile(drawableFile, destinationFile);
+        fileHelper.copyFile(drawableFile, destinationFile);
     }
 
     private File getMainActivityFile(ApplicationContext applicationContext, PlatformContext context) {
@@ -176,7 +175,7 @@ public class AndroidMerger extends CommonMerger {
             }
 
             fullPath[fullPath.length - 1] = applicationContext.getApplicationName() + ".java";
-            mainActivityFile = FileUtils.getFile(context.getPlatformNativeDirectory(), fullPath);
+            mainActivityFile = fileHelper.getFile(context.getPlatformNativeDirectory(), fullPath);
         }
 
         return mainActivityFile;

@@ -2,10 +2,11 @@ package com.github.emmerich.prepare;
 
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.util.FileUtils;
+import com.github.emmerich.util.FileHelper;
 import com.github.emmerich.util.MavenUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.Expand;
 
 import java.io.File;
@@ -13,9 +14,12 @@ import java.io.IOException;
 
 public abstract class CommonPreparer implements PlatformPreparer {
 
+    protected FileHelper fileHelper;
+
     @Override
     public void prepare(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
         try {
+            checkDependencies(applicationContext, context);
             cleanApplicationDirectory(applicationContext, context);
             resolveCordovaDependency(applicationContext, context);
             buildNativeProject(applicationContext, context);
@@ -26,7 +30,7 @@ public abstract class CommonPreparer implements PlatformPreparer {
 
     private void cleanApplicationDirectory(ApplicationContext applicationContext, PlatformContext context) {
         try {
-            FileUtils.deleteDirectory(context.getPlatformNativeDirectory());
+            fileHelper.deleteDirectory(context.getPlatformNativeDirectory());
         } catch(IOException e) {
             // Might be the first time we run so don't do anything here.
         }
@@ -49,9 +53,15 @@ public abstract class CommonPreparer implements PlatformPreparer {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            context.setPlatformLibDirectory(FileUtils.getFile(context.getPlatformLibDirectory(), FileUtils.stripFileExtension(dependencyZip.getName())));
+            context.setPlatformLibDirectory(fileHelper.getFile(context.getPlatformLibDirectory(), fileHelper.stripFileExtension(dependencyZip.getName())));
         }
     }
 
+    @Override
+    public void setFileHelper(FileHelper helper) {
+        fileHelper = helper;
+    }
+
     protected abstract void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException, MojoExecutionException;
+    protected abstract void checkDependencies(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException;
 }
