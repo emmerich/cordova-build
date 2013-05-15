@@ -44,6 +44,7 @@ import java.lang.Override;
  */
 public class BuildMojo extends AbstractMojo {
 
+    private static final String CORDOVA_VERSION = "2.5.0";
     /**
      * Cordova configuration file.
      *
@@ -115,7 +116,7 @@ public class BuildMojo extends AbstractMojo {
         }
 
         ApplicationContext applicationContext =
-                new ApplicationContext(project, config, explodedWarDir);
+                new ApplicationContext(project, config, explodedWarDir, CORDOVA_VERSION);
 
         // Iterate over each of the platforms specified by the user.
         for(MobilePlatform p : platforms) {

@@ -11,11 +11,14 @@ public class ApplicationContext {
     private File sourceDir;
     private String cordovaVersion;
 
-    public ApplicationContext(MavenProject project, CordovaConfiguration cordovaConfiguration, File sourceDir) {
+    public ApplicationContext(MavenProject project,
+                              CordovaConfiguration cordovaConfiguration,
+                              File sourceDir,
+                              String cordovaVersion) {
         this.project = project;
         this.cordovaConfiguration = cordovaConfiguration;
         this.sourceDir = sourceDir;
-        cordovaVersion = "2.5.0";
+        this.cordovaVersion = cordovaVersion;
     }
 
     public MavenProject getProject() {
