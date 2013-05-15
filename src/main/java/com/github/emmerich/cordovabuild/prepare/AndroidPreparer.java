@@ -28,8 +28,8 @@ public class AndroidPreparer extends CommonPreparer {
 
     @Override
     protected void checkDependencies(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
-        /*try {
-            String androidExec = SystemUtils.getExecutable("android", "--help");
+        try {
+            String androidExec = systemHelper.getExecutable("android", "--help");
             Process process = Runtime.getRuntime().exec(androidExec);
             if(process.waitFor() != 0) {
                 throw new MojoExecutionException("No Android executable was found on your PATH.");
@@ -41,7 +41,7 @@ public class AndroidPreparer extends CommonPreparer {
         }
 
         try {
-            String antExec = SystemUtils.getExecutable("ant", "-help");
+            String antExec = systemHelper.getExecutable("ant", "-help");
             Process process = Runtime.getRuntime().exec(antExec);
             if(process.waitFor() != 0) {
                 throw new MojoExecutionException("No Ant executable was found on your PATH.");
@@ -50,6 +50,6 @@ public class AndroidPreparer extends CommonPreparer {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }
