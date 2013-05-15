@@ -2,7 +2,8 @@ package com.github.emmerich.platform;
 
 import com.github.emmerich.builder.AndroidBuilder;
 import com.github.emmerich.builder.PlatformBuilder;
-import com.github.emmerich.merger.*;
+import com.github.emmerich.merger.AndroidMerger;
+import com.github.emmerich.merger.PlatformMerger;
 import com.github.emmerich.prepare.AndroidPreparer;
 import com.github.emmerich.prepare.PlatformPreparer;
 import org.apache.maven.plugin.MojoExecutionException;

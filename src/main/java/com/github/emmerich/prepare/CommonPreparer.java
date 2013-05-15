@@ -24,8 +24,7 @@ public abstract class CommonPreparer implements PlatformPreparer {
         }
     }
 
-    @Override
-    public void cleanApplicationDirectory(ApplicationContext applicationContext, PlatformContext context) {
+    private void cleanApplicationDirectory(ApplicationContext applicationContext, PlatformContext context) {
         try {
             FileUtils.deleteDirectory(context.getPlatformNativeDirectory());
         } catch(IOException e) {
@@ -33,8 +32,7 @@ public abstract class CommonPreparer implements PlatformPreparer {
         }
     }
 
-    @Override
-    public void resolveCordovaDependency(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
+    private void resolveCordovaDependency(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
         Artifact dependency = MavenUtils.getDependencyByArtifactId(applicationContext.getProject(), context.getCordovaArtifactId());
 
         if(dependency == null) {
@@ -54,4 +52,6 @@ public abstract class CommonPreparer implements PlatformPreparer {
             context.setPlatformLibDirectory(FileUtils.getFile(context.getPlatformLibDirectory(), FileUtils.stripFileExtension(dependencyZip.getName())));
         }
     }
+
+    protected abstract void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException;
 }

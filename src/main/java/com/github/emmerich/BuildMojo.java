@@ -17,14 +17,14 @@ package com.github.emmerich;
  */
 
 import com.github.emmerich.builder.PlatformBuilder;
+import com.github.emmerich.config.CordovaConfiguration;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.config.CordovaConfiguration;
 import com.github.emmerich.merger.PlatformMerger;
+import com.github.emmerich.platform.MobilePlatform;
+import com.github.emmerich.platform.PlatformLookup;
 import com.github.emmerich.prepare.PlatformPreparer;
 import com.github.emmerich.util.FileUtils;
-import com.github.emmerich.platform.PlatformLookup;
-import com.github.emmerich.platform.MobilePlatform;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -32,7 +32,6 @@ import org.apache.maven.project.MavenProject;
 
 import javax.xml.bind.*;
 import java.io.File;
-import java.lang.Override;
 
 /**
  * Builds a Cordova project for each chosen platform, merges in the source from the WAR project and builds the

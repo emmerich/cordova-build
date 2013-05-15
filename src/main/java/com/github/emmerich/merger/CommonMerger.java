@@ -35,4 +35,13 @@ public abstract class CommonMerger implements PlatformMerger {
             e.printStackTrace();
         }
     }
+
+    protected abstract void copyIconsToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException;
+    protected abstract void copySplashesToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException;
+
+    protected abstract void copySourceToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException;
+    protected abstract void copyConfigToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException;
+
+    protected abstract void writeAccessDeclarations(ApplicationContext applicationContext, PlatformContext context) throws IOException, JAXBException;
+    protected abstract void writeApplicationPermissions(ApplicationContext applicationContext, PlatformContext context) throws IOException, JDOMException;
 }

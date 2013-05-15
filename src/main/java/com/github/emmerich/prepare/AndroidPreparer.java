@@ -9,7 +9,7 @@ import java.io.IOException;
 public class AndroidPreparer extends CommonPreparer {
 
     @Override
-    public void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException {
+    protected void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException {
         String command = "cmd.exe /c " +
                 FileUtils.getFile(context.getPlatformLibDirectory(), "bin", "create.bat").getAbsolutePath() +
                 " " +

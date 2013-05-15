@@ -1,7 +1,5 @@
 package com.github.emmerich.context;
 
-import org.apache.maven.project.MavenProject;
-
 import java.io.File;
 
 public class PlatformContext {

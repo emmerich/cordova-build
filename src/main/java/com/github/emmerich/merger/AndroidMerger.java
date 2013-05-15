@@ -2,12 +2,12 @@ package com.github.emmerich.merger;
 
 import com.github.emmerich.config.*;
 import com.github.emmerich.context.ApplicationContext;
-import com.github.emmerich.platform.AndroidPermissionMap;
-import com.github.emmerich.platform.PermissionMap;
 import com.github.emmerich.context.PlatformContext;
+import com.github.emmerich.platform.AndroidPermissionMap;
+import com.github.emmerich.platform.MobilePlatform;
+import com.github.emmerich.platform.PermissionMap;
 import com.github.emmerich.util.FileEditor;
 import com.github.emmerich.util.FileUtils;
-import com.github.emmerich.platform.MobilePlatform;
 import com.github.emmerich.util.XMLUtils;
 import org.jdom.Document;
 import org.jdom.Element;

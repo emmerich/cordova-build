@@ -20,8 +20,7 @@ public abstract class CommonBuilder implements PlatformBuilder {
         }
     }
 
-    @Override
-    public void cleanBuildDir(ApplicationContext applicationContext, PlatformContext context) {
+    private void cleanBuildDir(ApplicationContext applicationContext, PlatformContext context) {
         try {
             FileUtils.deleteDirectory(context.getPlatformBinDirectory());
             FileUtils.mkdir(context.getPlatformBinDirectory().getAbsolutePath());
@@ -29,4 +28,7 @@ public abstract class CommonBuilder implements PlatformBuilder {
             // Directory might not have existed
         }
     }
+
+    protected abstract void performBuild(ApplicationContext applicationContext, PlatformContext context);
+    protected abstract void moveBinaries(ApplicationContext applicationContext, PlatformContext context) throws IOException;
 }
