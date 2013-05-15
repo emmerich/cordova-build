@@ -2,10 +2,8 @@ package com.github.emmerich.builder;
 
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.util.FileHelper;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.io.File;
 import java.io.IOException;

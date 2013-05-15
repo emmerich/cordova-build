@@ -3,9 +3,9 @@ package com.github.emmerich.util;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
 
-public class MavenUtils {
+public class MavenHelperImpl implements MavenHelper {
 
-    public static Artifact getDependencyByArtifactId(MavenProject project, String artifactId) {
+    public Artifact getDependencyByArtifactId(MavenProject project, String artifactId) {
         for(Object o : project.getArtifacts()) {
             Artifact a = (Artifact) o;
 

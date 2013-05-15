@@ -3,10 +3,10 @@ package com.github.emmerich.prepare;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
 import com.github.emmerich.util.FileHelper;
-import com.github.emmerich.util.MavenUtils;
+import com.github.emmerich.util.MavenHelper;
+import com.github.emmerich.util.SystemHelper;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.Expand;
 
 import java.io.File;
@@ -15,6 +15,8 @@ import java.io.IOException;
 public abstract class CommonPreparer implements PlatformPreparer {
 
     protected FileHelper fileHelper;
+    protected MavenHelper mavenHelper;
+    protected SystemHelper systemHelper;
 
     @Override
     public void prepare(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
@@ -37,7 +39,7 @@ public abstract class CommonPreparer implements PlatformPreparer {
     }
 
     private void resolveCordovaDependency(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
-        Artifact dependency = MavenUtils.getDependencyByArtifactId(applicationContext.getProject(), context.getCordovaArtifactId());
+        Artifact dependency = mavenHelper.getDependencyByArtifactId(applicationContext.getProject(), context.getCordovaArtifactId());
 
         if(dependency == null) {
             throw new MojoExecutionException("No artifact found for " + context.getCordovaArtifactId() + ". Did you correctly install it?");
@@ -60,6 +62,16 @@ public abstract class CommonPreparer implements PlatformPreparer {
     @Override
     public void setFileHelper(FileHelper helper) {
         fileHelper = helper;
+    }
+
+    @Override
+    public void setMavenHelper(MavenHelper helper) {
+        mavenHelper = helper;
+    }
+
+    @Override
+    public void setSystemHelper(SystemHelper helper) {
+        systemHelper = helper;
     }
 
     protected abstract void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException, MojoExecutionException;

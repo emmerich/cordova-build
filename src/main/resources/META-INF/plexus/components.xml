@@ -8,5 +8,17 @@
             <role>com.github.emmerich.util.FileHelper</role>
             <implementation>com.github.emmerich.util.FileHelperImpl</implementation>
         </component>
+        <component>
+            <role>com.github.emmerich.util.MavenHelper</role>
+            <implementation>com.github.emmerich.util.MavenHelperImpl</implementation>
+        </component>
+        <component>
+            <role>com.github.emmerich.util.SystemHelper</role>
+            <implementation>com.github.emmerich.util.SystemHelperImpl</implementation>
+        </component>
+        <component>
+            <role>com.github.emmerich.util.XMLHelper</role>
+            <implementation>com.github.emmerich.util.XMLHelperImpl</implementation>
+        </component>
     </components>
 </component-set>

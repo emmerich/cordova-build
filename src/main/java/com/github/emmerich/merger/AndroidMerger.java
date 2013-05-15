@@ -3,11 +3,10 @@ package com.github.emmerich.merger;
 import com.github.emmerich.config.*;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.platform.permission.AndroidPermissionMap;
 import com.github.emmerich.platform.MobilePlatform;
+import com.github.emmerich.platform.permission.AndroidPermissionMap;
 import com.github.emmerich.platform.permission.PlatformPermissionMap;
 import com.github.emmerich.util.FileEditor;
-import com.github.emmerich.util.XMLUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -126,7 +125,7 @@ public class AndroidMerger extends CommonMerger {
         CordovaConfiguration configuration = applicationContext.getCordovaConfiguration();
 
         File manifestFile = fileHelper.getFile(context.getPlatformNativeDirectory(), "AndroidManifest.xml");
-        Document applicationManifest = XMLUtils.getDocument(manifestFile);
+        Document applicationManifest = xmlHelper.getDocument(manifestFile);
         Element applicationManifestRoot = applicationManifest.getRootElement();
         Preference permissionsPreference = configuration.getPreferenceByName("permissions");
 
@@ -146,7 +145,7 @@ public class AndroidMerger extends CommonMerger {
                 applicationManifestRoot.addContent(buildPermissionElement(permission));
             }
 
-            XMLUtils.write(applicationManifest, manifestFile);
+            xmlHelper.write(applicationManifest, manifestFile);
         }
     }
 

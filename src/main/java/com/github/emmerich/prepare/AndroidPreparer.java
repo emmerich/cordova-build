@@ -2,7 +2,6 @@ package com.github.emmerich.prepare;
 
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.util.SystemUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ public class AndroidPreparer extends CommonPreparer {
 
     @Override
     protected void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException, MojoExecutionException {
-        String command = SystemUtils.getExecutable(
+        String command = systemHelper.getExecutable(
                 // create is turned into create.bat or whatever necessary
                 fileHelper.getFile(context.getPlatformLibDirectory(), "bin", "create").getAbsolutePath(),
                 context.getPlatformNativeDirectory().getAbsolutePath(),

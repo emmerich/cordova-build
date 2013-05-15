@@ -1,11 +1,11 @@
 package com.github.emmerich.util;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 
-public class SystemUtils extends org.apache.commons.lang3.SystemUtils {
+public class SystemHelperImpl implements SystemHelper {
 
-    public static String getExecutable(String executable, String... args) throws MojoExecutionException {
-
+    public String getExecutable(String executable, String... args) throws MojoExecutionException {
         StringBuilder executableCommand = new StringBuilder();
 
         if(SystemUtils.IS_OS_WINDOWS) {
@@ -25,6 +25,5 @@ public class SystemUtils extends org.apache.commons.lang3.SystemUtils {
         }
 
         return executableCommand.toString();
-
     }
 }

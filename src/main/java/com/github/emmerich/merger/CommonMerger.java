@@ -4,9 +4,9 @@ import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
 import com.github.emmerich.util.CordovaConfigurationWriter;
 import com.github.emmerich.util.FileHelper;
+import com.github.emmerich.util.XMLHelper;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.jdom.JDOMException;
 
 import javax.xml.bind.JAXBException;
@@ -16,6 +16,7 @@ public abstract class CommonMerger implements PlatformMerger {
 
     protected CordovaConfigurationWriter configurationFileWriter;
     protected FileHelper fileHelper;
+    protected XMLHelper xmlHelper;
 
     @Override
     public void merge(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException {
@@ -42,6 +43,11 @@ public abstract class CommonMerger implements PlatformMerger {
     @Override
     public void setFileHelper(FileHelper helper) {
         fileHelper = helper;
+    }
+
+    @Override
+    public void setXMLHelper(XMLHelper helper) {
+        xmlHelper = helper;
     }
 
     protected abstract void copyIconsToNative(ApplicationContext applicationContext, PlatformContext context) throws IOException;

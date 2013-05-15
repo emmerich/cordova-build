@@ -1,6 +1,5 @@
 package com.github.emmerich.util;
 
-import org.codehaus.plexus.util.*;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.io.InputStreamFacade;
 

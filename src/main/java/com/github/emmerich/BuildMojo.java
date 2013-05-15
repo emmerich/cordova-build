@@ -26,6 +26,9 @@ import com.github.emmerich.platform.PlatformProviderFactory;
 import com.github.emmerich.platform.provider.PlatformProvider;
 import com.github.emmerich.prepare.PlatformPreparer;
 import com.github.emmerich.util.FileHelper;
+import com.github.emmerich.util.MavenHelper;
+import com.github.emmerich.util.SystemHelper;
+import com.github.emmerich.util.XMLHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -95,6 +98,21 @@ public class BuildMojo extends AbstractMojo {
      */
     private FileHelper fileHelper;
 
+    /**
+     * @component role="com.github.emmerich.util.MavenHelper"
+     */
+    private MavenHelper mavenHelper;
+
+    /**
+     * @component role="com.github.emmerich.util.SystemHelper"
+     */
+    private SystemHelper systemHelper;
+
+    /**
+     * @component role="com.github.emmerich.util.XMLHelper"
+     */
+    private XMLHelper xmlHelper;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         CordovaConfiguration config = null;
@@ -147,11 +165,14 @@ public class BuildMojo extends AbstractMojo {
             // Create the sample project from the Cordova library
             PlatformPreparer preparer = provider.getPreparer(p);
             preparer.setFileHelper(fileHelper);
+            preparer.setMavenHelper(mavenHelper);
+            preparer.setSystemHelper(systemHelper);
             preparer.prepare(applicationContext, context);
 
             // Merge the project's source code with the sample project
             PlatformMerger merger = provider.getMerger(p);
             merger.setFileHelper(fileHelper);
+            merger.setXMLHelper(xmlHelper);
             merger.merge(applicationContext, context);
 
             // Build the sample project and place in the bin folder

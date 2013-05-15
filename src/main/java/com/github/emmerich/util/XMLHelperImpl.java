@@ -10,14 +10,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class XMLUtils {
+public class XMLHelperImpl implements XMLHelper {
 
-    public static Document getDocument(File file) throws IOException, JDOMException {
+    public Document getDocument(File file) throws IOException, JDOMException {
         SAXBuilder builder = new SAXBuilder();
         return builder.build(file);
     }
 
-    public static void write(Document document, File file) throws IOException {
+    public void write(Document document, File file) throws IOException {
         XMLOutputter outputter = new XMLOutputter();
         outputter.setFormat(Format.getPrettyFormat());
         outputter.output(document, new FileWriter(file));
