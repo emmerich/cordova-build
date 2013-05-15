@@ -1,6 +1,6 @@
 package com.github.emmerich.util;
 
-import com.github.emmerich.config.cordova.CordovaConfiguration;
+import com.github.emmerich.config.CordovaConfiguration;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

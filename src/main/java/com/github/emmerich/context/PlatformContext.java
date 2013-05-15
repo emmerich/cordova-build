@@ -9,15 +9,18 @@ public class PlatformContext {
     private File platformWorkingDirectory;
     private File platformLibDirectory;
     private File platformNativeDirectory;
+    private File platformBinDirectory;
 
     public PlatformContext(String cordovaArtifactId,
                            File platformWorkingDirectory,
                            File platformLibDirectory,
-                           File platformNativeDirectory) {
+                           File platformNativeDirectory,
+                           File platformBinDirectory) {
         this.cordovaArtifactId = cordovaArtifactId;
         this.platformWorkingDirectory = platformWorkingDirectory;
         this.platformLibDirectory = platformLibDirectory;
         this.platformNativeDirectory = platformNativeDirectory;
+        this.platformBinDirectory = platformBinDirectory;
     }
 
     public File getPlatformNativeDirectory() {
@@ -50,5 +53,13 @@ public class PlatformContext {
 
     public void setCordovaArtifactId(String cordovaArtifactId) {
         this.cordovaArtifactId = cordovaArtifactId;
+    }
+
+    public File getPlatformBinDirectory() {
+        return platformBinDirectory;
+    }
+
+    public void setPlatformBinDirectory(File platformBinDirectory) {
+        this.platformBinDirectory = platformBinDirectory;
     }
 }

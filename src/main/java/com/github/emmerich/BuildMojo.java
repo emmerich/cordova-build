@@ -16,9 +16,10 @@ package com.github.emmerich;
  * limitations under the License.
  */
 
+import com.github.emmerich.builder.PlatformBuilder;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
-import com.github.emmerich.config.cordova.CordovaConfiguration;
+import com.github.emmerich.config.CordovaConfiguration;
 import com.github.emmerich.merger.PlatformMerger;
 import com.github.emmerich.prepare.PlatformPreparer;
 import com.github.emmerich.util.FileUtils;
@@ -42,8 +43,6 @@ import java.lang.Override;
  * @requiresDependencyResolution compile
  */
 public class BuildMojo extends AbstractMojo {
-
-    public static final String CORDOVA_VERSION = "2.5.0";
 
     /**
      * Cordova configuration file.
@@ -123,12 +122,14 @@ public class BuildMojo extends AbstractMojo {
             File platformWorkingDir = FileUtils.getFile(pluginWorkingDir, p.toString());
             File platformLibDir = FileUtils.getFile(platformWorkingDir, "lib");
             File platformNativeDir = FileUtils.getFile(platformWorkingDir, "native");
+            File platformBinDir = FileUtils.getFile(platformWorkingDir, "bin");
 
             PlatformContext context = new PlatformContext(
                     PlatformLookup.getCordovaArtifactId(p),
                     platformWorkingDir,
                     platformLibDir,
-                    platformNativeDir);
+                    platformNativeDir,
+                    platformBinDir);
 
             // Create the sample project from the Cordova library
             PlatformPreparer preparer = PlatformLookup.getPreparerForPlatform(p);
@@ -136,11 +137,11 @@ public class BuildMojo extends AbstractMojo {
 
             // Merge the project's source code with the sample project
             PlatformMerger merger = PlatformLookup.getMergerForPlatform(p);
-            merger.perform(applicationContext, context);
-
+            merger.merge(applicationContext, context);
 
             // Build the sample project and place in the bin folder
-            // TODO(shall): implement, this is current done manually via the command line
+            PlatformBuilder builder = PlatformLookup.getBuilderForPlatform(p);
+            builder.build(applicationContext, context);
         }
     }
 }

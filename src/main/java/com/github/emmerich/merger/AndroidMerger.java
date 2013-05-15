@@ -1,6 +1,6 @@
 package com.github.emmerich.merger;
 
-import com.github.emmerich.config.cordova.*;
+import com.github.emmerich.config.*;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.platform.AndroidPermissionMap;
 import com.github.emmerich.platform.PermissionMap;

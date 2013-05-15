@@ -1,6 +1,6 @@
 package com.github.emmerich.context;
 
-import com.github.emmerich.config.cordova.CordovaConfiguration;
+import com.github.emmerich.config.CordovaConfiguration;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;

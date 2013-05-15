@@ -1,7 +1,6 @@
 package com.github.emmerich.merger;
 
 
-import com.github.emmerich.config.cordova.CordovaConfiguration;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -12,7 +11,7 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 public interface PlatformMerger {
-    public void perform(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException;
+    public void merge(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException;
 
     public void copyIconsToNative(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException, IOException;
     public void copySplashesToNative(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException, IOException;

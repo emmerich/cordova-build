@@ -1,6 +1,6 @@
 package com.github.emmerich.platform;
 
-import com.github.emmerich.config.cordova.Feature;
+import com.github.emmerich.config.Feature;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package com.github.emmerich.platform;
 
+import com.github.emmerich.builder.AndroidBuilder;
+import com.github.emmerich.builder.PlatformBuilder;
 import com.github.emmerich.merger.*;
 import com.github.emmerich.prepare.AndroidPreparer;
 import com.github.emmerich.prepare.PlatformPreparer;
@@ -36,6 +38,17 @@ public class PlatformLookup {
                 return "cordova-android";
             default:
                 throw new MojoExecutionException("Cannot find Cordova Artifact ID for platform: " + platform);
+        }
+
+    }
+
+    public static PlatformBuilder getBuilderForPlatform(MobilePlatform p) throws MojoExecutionException {
+
+        switch(p) {
+            case android:
+                return new AndroidBuilder();
+            default:
+                throw new MojoExecutionException("Cannot find builder for platform: " + p);
         }
 
     }

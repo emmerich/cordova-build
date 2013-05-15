@@ -7,7 +7,7 @@
         }
 )
 
-package com.github.emmerich.config.cordova;
+package com.github.emmerich.config;
 
 import javax.xml.bind.annotation.XmlNs;
 import javax.xml.bind.annotation.XmlNsForm;

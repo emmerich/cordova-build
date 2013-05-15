@@ -1,6 +1,5 @@
 package com.github.emmerich.merger;
 
-import com.github.emmerich.config.cordova.CordovaConfiguration;
 import com.github.emmerich.context.ApplicationContext;
 import com.github.emmerich.context.PlatformContext;
 import com.github.emmerich.util.CordovaConfigurationWriter;
@@ -16,7 +15,7 @@ public abstract class CommonPlatformMerger implements PlatformMerger {
     protected CordovaConfigurationWriter configurationFileWriter;
 
     @Override
-    public void perform(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException {
+    public void merge(ApplicationContext applicationContext, PlatformContext context) throws MojoFailureException, MojoExecutionException {
         this.configurationFileWriter = new CordovaConfigurationWriter();
 
         try {
