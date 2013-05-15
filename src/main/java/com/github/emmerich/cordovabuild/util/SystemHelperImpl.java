@@ -8,15 +8,15 @@ public class SystemHelperImpl implements SystemHelper {
     public String getExecutable(String executable, String... args) throws MojoExecutionException {
         StringBuilder executableCommand = new StringBuilder();
 
-        if(SystemUtils.IS_OS_WINDOWS) {
+        if(isOsWindows()) {
             executableCommand.append("cmd.exe /c ");
             executableCommand.append(executable);
             executableCommand.append(".bat");
-        } else if(SystemUtils.IS_OS_UNIX) {
+        } else if(isOsLinux()) {
             // The signature of this method accepts Unix-friendly executables, so we don't need to do anything
             executableCommand.append(executable);
         } else {
-            throw new MojoExecutionException("Your OS " + SystemUtils.OS_NAME + " is not recognized");
+            throw new MojoExecutionException("Your OS " + getOsName() + " is not recognized");
         }
 
         for(String arg : args) {
@@ -25,5 +25,20 @@ public class SystemHelperImpl implements SystemHelper {
         }
 
         return executableCommand.toString();
+    }
+
+    @Override
+    public boolean isOsWindows() {
+        return SystemUtils.IS_OS_WINDOWS;
+    }
+
+    @Override
+    public boolean isOsLinux() {
+        return SystemUtils.IS_OS_LINUX;
+    }
+
+    @Override
+    public String getOsName() {
+        return SystemUtils.OS_NAME;
     }
 }
