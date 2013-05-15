@@ -18,4 +18,7 @@ A Maven plugin used to build WAR projects into native applications for mobile pl
 #### POM file
 Look at the POM file in the sample directory for a good example of how to get started.
 The important configuration is the location of your PhoneGap `config.xml`. Make sure it points to the right place.
+
+## Documentation
+Right now, it's probably this README or looking at the code. I'll aim to get some Maven plugin documentation running.
         

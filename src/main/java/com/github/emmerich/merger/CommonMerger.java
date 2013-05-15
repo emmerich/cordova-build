@@ -10,7 +10,7 @@ import org.jdom.JDOMException;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
-public abstract class CommonPlatformMerger implements PlatformMerger {
+public abstract class CommonMerger implements PlatformMerger {
 
     protected CordovaConfigurationWriter configurationFileWriter;
 

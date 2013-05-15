@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AndroidMerger extends CommonPlatformMerger {
+public class AndroidMerger extends CommonMerger {
 
     private static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 

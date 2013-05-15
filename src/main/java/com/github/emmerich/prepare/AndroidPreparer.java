@@ -6,7 +6,7 @@ import com.github.emmerich.util.FileUtils;
 
 import java.io.IOException;
 
-public class AndroidPreparer extends CommonPlatformPreparer {
+public class AndroidPreparer extends CommonPreparer {
 
     @Override
     public void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException {

@@ -11,7 +11,7 @@ import org.codehaus.plexus.util.Expand;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class CommonPlatformPreparer implements PlatformPreparer {
+public abstract class CommonPreparer implements PlatformPreparer {
 
     @Override
     public void prepare(ApplicationContext applicationContext, PlatformContext context) throws MojoExecutionException {
