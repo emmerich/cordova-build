@@ -53,5 +53,5 @@ public abstract class CommonPreparer implements PlatformPreparer {
         }
     }
 
-    protected abstract void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException;
+    protected abstract void buildNativeProject(ApplicationContext applicationContext, PlatformContext context) throws IOException, MojoExecutionException;
 }
