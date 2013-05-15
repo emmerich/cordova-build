@@ -49,7 +49,8 @@ public class AndroidMerger extends CommonMerger {
 
         if(configuration.getSplashes().size() > 0) {
             File mainActivityFile = getMainActivityFile(applicationContext, context);
-            FileEditor mainActivityWriter = new FileEditor(mainActivityFile);
+            FileEditor mainActivityWriter = fileEditorFactory.build(mainActivityFile);
+
             mainActivityWriter.open();
             mainActivityWriter.insertBefore(
                     "(super\\.loadUrl\\(Config.getStartUrl\\(\\)\\);)",

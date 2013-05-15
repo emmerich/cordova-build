@@ -25,10 +25,7 @@ import com.github.emmerich.platform.MobilePlatform;
 import com.github.emmerich.platform.PlatformProviderFactory;
 import com.github.emmerich.platform.provider.PlatformProvider;
 import com.github.emmerich.prepare.PlatformPreparer;
-import com.github.emmerich.util.FileHelper;
-import com.github.emmerich.util.MavenHelper;
-import com.github.emmerich.util.SystemHelper;
-import com.github.emmerich.util.XMLHelper;
+import com.github.emmerich.util.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -113,6 +110,11 @@ public class BuildMojo extends AbstractMojo {
      */
     private XMLHelper xmlHelper;
 
+    /**
+     * @component role="com.github.emmerich.util.FileEditorFactory"
+     */
+    private FileEditorFactory fileEditorFactory;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         CordovaConfiguration config = null;
@@ -173,6 +175,7 @@ public class BuildMojo extends AbstractMojo {
             PlatformMerger merger = provider.getMerger(p);
             merger.setFileHelper(fileHelper);
             merger.setXMLHelper(xmlHelper);
+            merger.setFileEditorFactory(fileEditorFactory);
             merger.merge(applicationContext, context);
 
             // Build the sample project and place in the bin folder
